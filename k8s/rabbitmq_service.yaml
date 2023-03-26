@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq_service
+spec:
+  selector:
+    matchLabels:
+      app: rabbitmq_service
+  template:
+    metadata:
+      labels:
+        app: rabbitmq_service
+    spec:
+      containers:
+        - name: rabbitmq
+          image: rabbitmq:3.11-management
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              value: root
+            - name: RABBITMQ_DEFAULT_PASS
+              value: password
+          volumeMounts:
+            - name: rabbitmq-persistent-storage
+              mountPath: /var/lib/rabbitmq
+      volumes:
+        - name: rabbitmq-persistent-storage
+          persistentVolumeClaim:
+            claimName: rabbitmq-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq_service
+spec:
+  type: ClusterIP
+  selector:
+    app: rabbitmq_service
+  ports:
+    - port: 5672
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: rabbitmq-pvc
+spec:
+  storageClassName: rabbitmq-class
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: rabbitmq-pv
+  labels:
+    type: local
+spec:
+  storageClassName: rabbitmq-class
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"

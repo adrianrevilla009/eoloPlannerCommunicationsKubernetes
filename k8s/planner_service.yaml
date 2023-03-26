@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: planner_service
+spec:
+  selector:
+    matchLabels:
+      app: planner_service
+  template:
+    metadata:
+      labels:
+        app: planner_service
+    spec:
+      containers:
+        - name: planner
+          image: mastercloudapps/planner:v1.23
+          env:
+            - name: TOPO_HOST
+              value: toposervice
+            - name: TOPO_PORT
+              value: "8181"
+            - name: GRPC_CLIENT_WEATHERSERVER_ADDRESS
+              value: static://weatherservice:9090
+            - name: SPRING_CLOUD_STREAM_RABBIT_BINDER_NODES
+              value: rabbitmq:5672
+            - name: SPRING_RABBITMQ_HOST
+              value: rabbitmq
+            - name: SPRING_RABBITMQ_PORT
+              value: "5672"
+            - name: SPRING_RABBITMQ_USERNAME
+              value: root
+            - name: SPRING_RABBITMQ_PASSWORD
+              value: password
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: planner_service
+spec:
+  type: ClusterIP
+  selector:
+    app: planner_service
+  ports:
+    - port: 8181

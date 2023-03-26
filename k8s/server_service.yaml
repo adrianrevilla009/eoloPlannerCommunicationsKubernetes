@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server_service
+spec:
+  selector:
+    matchLabels:
+      app: server_service
+  template:
+    metadata:
+      labels:
+        app: server_service
+    spec:
+      containers:
+        - name: server_service
+          image: mastercloudapps/server:v1.23
+          env:
+            - name: QUARKUS_DATASOURCE_DB_KIND
+              value: mysql
+            - name: QUARKUS_DATASOURCE_JDBC_URL
+              value: jdbc:mysql://mysql/eoloplantsDB
+            - name: QUARKUS_DATASOURCE_USERNAME
+              value: root
+            - name: QUARKUS_DATASOURCE_PASSWORD
+              value: password
+            - name: RABBITMQ_HOST
+              value: rabbitmq
+            - name: RABBITMQ_PORT
+              value: "5672"
+            - name: RABBITMQ_USERNAME
+              value: root
+            - name: RABBITMQ_PASSWORD
+              value: password
+      restartPolicy: OnFailure
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: server_service
+spec:
+  type: NodePort
+  selector:
+    app: server_service
+  ports:
+    - port: 8080
