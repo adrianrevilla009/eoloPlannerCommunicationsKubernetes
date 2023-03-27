@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: weather_service
+  name: weather-service
 spec:
   selector:
     matchLabels:
-      app: weather_service
+      app: weather-service
   template:
     metadata:
       labels:
-        app: weather_service
+        app: weather-service
     spec:
       containers:
-        - name: weather_service
+        - name: weather-service
           image: mastercloudapps/weatherservice:v1.23
           env:
             - name: QUARKUS_GRPC_SERVER_HOST
@@ -24,10 +24,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: weather_service
+  name: weather-service
 spec:
   type: ClusterIP
   selector:
-    app: weather_service
+    app: weather-service
   ports:
     - port: 9090

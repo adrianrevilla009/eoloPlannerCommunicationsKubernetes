@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: planner_service
+  name: planner-service
 spec:
   selector:
     matchLabels:
-      app: planner_service
+      app: planner-service
   template:
     metadata:
       labels:
-        app: planner_service
+        app: planner-service
     spec:
       containers:
         - name: planner
@@ -36,10 +36,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: planner_service
+  name: planner-service
 spec:
   type: ClusterIP
   selector:
-    app: planner_service
+    app: planner-service
   ports:
     - port: 8181

@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongo_service
+  name: mongo
 spec:
   selector:
     matchLabels:
-      app: mongo_service
+      app: mongo
   template:
     metadata:
       labels:
-        app: mongo_service
+        app: mongo
     spec:
       containers:
         - name: mongo
@@ -21,48 +21,14 @@ spec:
               value: password
             - name: MONGO_INITDB_DATABASE
               value: topoDB
-          volumeMounts:
-            - name: mongo-persistent-storage
-              mountPath: /data/db
-      volumes:
-        - name: mongo-persistent-storage
-          persistentVolumeClaim:
-            claimName: mongo-pvc
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongo_service
+  name: mongo
 spec:
   type: ClusterIP
   selector:
-    app: mongo_service
+    app: mongo
   ports:
-    - port: 27019
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: mongo-pvc
-spec:
-  storageClassName: mongo-class
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 3Gi
----
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: mongo-pv
-  labels:
-    type: local
-spec:
-  storageClassName: mongo-class
-  capacity:
-    storage: 10Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: "/mnt/data"
+    - port: 27017

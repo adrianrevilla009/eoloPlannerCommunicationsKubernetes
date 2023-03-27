@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: topo_service
+  name: topo-service
 spec:
   selector:
     matchLabels:
-      app: topo_service
+      app: topo-service
   template:
     metadata:
       labels:
-        app: topo_service
+        app: topo-service
     spec:
       containers:
-        - name: topo_service
+        - name: topo-service
           image: mastercloudapps/toposervice:v1.23
           env:
             - name: SPRING_DATA_MONGODB_HOST
-              value: mongodb
+              value: mongo
             - name: SPRING_DATA_MONGODB_PORT
               value: "27017"
             - name: SPRING_DATA_MONGODB_DATABASE
@@ -27,16 +27,16 @@ spec:
               value: root
             - name: SPRING_DATA_MONGODB_PASSWORD
               value: password
-      restartPolicy: OnFailure
+      restartPolicy: Always
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: topo_service
+  name: topo-service
 spec:
   type: ClusterIP
   selector:
-    app: topo_service
+    app: topo-service
   ports:
     - port: 8181

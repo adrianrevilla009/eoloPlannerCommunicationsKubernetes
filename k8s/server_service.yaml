@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: server_service
+  name: server-service
 spec:
   selector:
     matchLabels:
-      app: server_service
+      app: server-service
   template:
     metadata:
       labels:
-        app: server_service
+        app: server-service
     spec:
       containers:
-        - name: server_service
-          image: mastercloudapps/server:v1.23
+        - name: server-service
+          image: adrian2606/eoloplannercommunications-server:version1
           env:
             - name: QUARKUS_DATASOURCE_DB_KIND
               value: mysql
@@ -31,16 +31,16 @@ spec:
               value: root
             - name: RABBITMQ_PASSWORD
               value: password
-      restartPolicy: OnFailure
+      restartPolicy: Always
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: server_service
+  name: server-service
 spec:
   type: NodePort
   selector:
-    app: server_service
+    app: server-service
   ports:
-    - port: 8080
+    - port: 9000
