@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: server-service
-          image: adrian2606/eoloplannercommunications-server:version1
+          image: mastercloudapps/server:v1.23
           env:
             - name: QUARKUS_DATASOURCE_DB_KIND
               value: mysql
@@ -43,4 +43,4 @@ spec:
   selector:
     app: server-service
   ports:
-    - port: 9000
+    - port: 8080

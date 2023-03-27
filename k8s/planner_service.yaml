@@ -20,7 +20,7 @@ spec:
             - name: TOPO_PORT
               value: "8181"
             - name: GRPC_CLIENT_WEATHERSERVER_ADDRESS
-              value: static://weatherservice:9090
+              value: static://weather-service:9090
             - name: SPRING_CLOUD_STREAM_RABBIT_BINDER_NODES
               value: rabbitmq:5672
             - name: SPRING_RABBITMQ_HOST
@@ -31,6 +31,12 @@ spec:
               value: root
             - name: SPRING_RABBITMQ_PASSWORD
               value: password
+#          command:
+#            - "bash"
+#            - "-c"
+#            - "./wait-for-it.sh weather-service:9090 --"
+#            - "./wait-for-it.sh topo-service:8181 --"
+#            - "./wait-for-it.sh rabbitmq:5672"
 
 ---
 apiVersion: v1

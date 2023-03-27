@@ -14,11 +14,11 @@ spec:
       containers:
         - name: weather-service
           image: mastercloudapps/weatherservice:v1.23
-          env:
-            - name: QUARKUS_GRPC_SERVER_HOST
-              value: weatherservice
-            - name: QUARKUS_GRPC_SERVER_PORT
-              value: "9090"
+#          env:
+#            - name: QUARKUS_GRPC_SERVER_HOST
+#              value: weatherservice
+#            - name: QUARKUS_GRPC_SERVER_PORT
+#              value: "9090"
 
 ---
 apiVersion: v1
